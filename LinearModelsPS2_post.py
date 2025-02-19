@@ -4,8 +4,10 @@ from tabulate import tabulate
 
 
 
+
+// 
 def estimate( 
-        y: np.ndarray, x: np.ndarray, transform='', N=None, T=None
+        y, x, z=None, transform='', T=None, robust_se=False
     ) -> list:
     
     b_hat = est_ols(y, x)
@@ -21,6 +23,46 @@ def estimate(
     names = ['b_hat', 'se', 'sigma', 't_values', 'R2', 'cov']
     results = [b_hat, se, sigma, t_values, R2, cov]
     return dict(zip(names, results))
+//
+
+
+def estimate(
+        y: np.ndarray, x: np.ndarray, z: np.ndarray = None, transform='', N=None, T=None, robust_se=False
+    ) -> dict:
+    """Computes OLS or IV estimates and returns key statistics."""
+    
+    # Ensure correct input dimensions
+    assert y.ndim == 2 and x.ndim == 2, 'Inputs y and x must be 2D arrays'
+    assert y.shape[1] == 1, 'y must be a column vector'
+    assert y.shape[0] == x.shape[0], 'y and x must have the same number of observations'
+    
+    # Determine if instrumental variables are used
+    is_iv = z is not None
+    
+    # Estimate coefficients using OLS or IV
+    if is_iv:
+        b_hat = est_piv(y, x, z)
+    else:
+        b_hat = est_ols(y, x)
+    
+    # Compute residuals and sum of squares
+    resid = y - x @ b_hat
+    SSR = resid.T @ resid
+    SST = (y - y.mean()).T @ (y - y.mean())
+    R2 = 1 - SSR / SST if not is_iv else np.nan
+    
+    # Adjust x for IV estimation
+    x_transformed = z @ solve(z.T @ z, z.T @ x) if is_iv else x
+    
+    # Compute variance, covariance matrix, and standard errors
+    sigma, cov, se = variance(transform, SSR, x_transformed, N, T)
+    if robust_se:
+        cov, se = robust(x_transformed, resid, T)
+    
+    t_values = b_hat / se
+    
+    return {'b_hat': b_hat, 'se': se, 'sigma': sigma, 't_values': t_values, 'R2': R2, 'cov': cov}
+
 
     
 def est_ols( y: np.ndarray, x: np.ndarray) -> np.ndarray:

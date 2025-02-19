@@ -4,8 +4,8 @@ from tabulate import tabulate
 
 
 
-
-// 
+# Fra øvelsestimen 
+"""
 def estimate( 
         y, x, z=None, transform='', T=None, robust_se=False
     ) -> list:
@@ -23,7 +23,7 @@ def estimate(
     names = ['b_hat', 'se', 'sigma', 't_values', 'R2', 'cov']
     results = [b_hat, se, sigma, t_values, R2, cov]
     return dict(zip(names, results))
-//
+"""
 
 
 def estimate(

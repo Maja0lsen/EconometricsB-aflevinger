@@ -20,7 +20,7 @@ def estimate(
             'fd': First-difference
             'be': Between transformation
             'fe': Within transformation
-            're': Random effects estSimation.
+            're': Random effects estimation.
         >> T (int, optional): If panel data, T is the number of time periods in
         the panel, and is used for estimating the variance. Defaults to None.
         >> robust_se (bool): Calculates robust standard errors if True.

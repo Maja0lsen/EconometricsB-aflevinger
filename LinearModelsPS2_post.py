@@ -2,9 +2,6 @@ import numpy as np
 from numpy import linalg as la
 from tabulate import tabulate
 
-
-
-
 def estimate(
         y: np.ndarray, x: np.ndarray, z: np.ndarray = None, transform='', N=None, T=None, robust_se=False
     ) -> dict:

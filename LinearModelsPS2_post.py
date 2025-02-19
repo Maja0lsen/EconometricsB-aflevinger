@@ -3,7 +3,7 @@ from numpy import linalg as la
 from tabulate import tabulate
 
 
-
+# Hyggehejsa
 # Fra øvelsestimen 
 """
 def estimate( 

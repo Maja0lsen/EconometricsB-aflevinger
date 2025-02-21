@@ -6,30 +6,6 @@ from tabulate import tabulate
 def estimate( 
         y, x, z=None, transform='', T=None, robust_se=False
     ) -> list:
-    """Uses the OLS or PIV to perform a regression of y on x, or z as an
-    instrument if provided, and provides all other necessary statistics such 
-    as standard errors, t-values etc.  
-
-    Args:
-        y (np.array): Dependent variable (Needs to have shape 2D shape)
-        x (np.array): Independent variable (Needs to have shape 2D shape)
-        z (None or np.array): Instrument array (Needs to have same shape as x)
-        >> transform (str, optional): Defaults to ''. If the data is 
-        transformed in any way, the following transformations are allowed:
-            '': No transformations
-            'fd': First-difference
-            'be': Between transformation
-            'fe': Within transformation
-            're': Random effects estimation.
-        >> T (int, optional): If panel data, T is the number of time periods in
-        the panel, and is used for estimating the variance. Defaults to None.
-        >> robust_se (bool): Calculates robust standard errors if True.
-        Defaults to False.
-
-    Returns:
-        list: Returns a dictionary with the following variables:
-        'b_hat', 'se', 'sigma2', 't_values', 'R2', 'cov'
-    """
     
     assert y.ndim == 2, 'Input y must be 2-dimensional'
     assert x.ndim == 2, 'Input x must be 2-dimensional'

@@ -25,7 +25,7 @@ def estimate(y, x, z=None, transform='', T=None, robust_se=False):
     if DOIV:
         gammahat = la.solve(np.dot(z.T, z), np.dot(z.T, x))
         x_ = np.dot(z, gammahat)
-        R2 = np.nan  # Reset R2 when using IV
+        R2 = np.nan  # Reset R2 when using IV 
     else:
         x_ = x
     
